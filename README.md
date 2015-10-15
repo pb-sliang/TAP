@@ -24,6 +24,7 @@ or
 )
 
 cd TAP
+
 sh setup.sh     # this will copy python scripts to FALCON virtual environment $VIRTUAL_ENV/bin
 
 # Running TAP
