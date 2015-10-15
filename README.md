@@ -39,9 +39,9 @@ Set length_cutoff to a small value (for example length_cutoff = 500).
 tap.sh. Note that tap.sh should be run in the same directory where FALCON was run (on a small number of cells) in the directory containing 0-rawreads subdirectory. tap.sh generates two text files in the current directory reporting the results of the calculation:
 ideal_ovlp.txt and actual_ovlp.txt. File ideal_ovlp.txt is the expected overlaps computed from the the read length distribution
 assuming the genome contains no repeats. File actual_ovlp.txt is from the daligner overlap normalized to so it can be directly
-compared to ideal_ovlp.txt. In both files, the first column is the minimum overlap length, below which the overlap will not be counted. The secon column is the normalized overlap. (this will be the right hand size of the equaltion above for ideal_ovlp.txt and the left side of the euqation for actual_ovlp.txt). These two files can be plotted together using plot_ovlp script to gnuplot:
+compared to ideal_ovlp.txt. In both files, the first column is the minimum overlap length, below which the overlap will not be counted. The secon column is the normalized overlap. (this will be the right hand size of the equaltion above for ideal_ovlp.txt and the left side of the euqation for actual_ovlp.txt). These two files can be plotted together using gnuplot_script script to gnuplot:
 
-gnuplot plot_ovlp
+gnuplot gnuplot_script
 
 This generates a file plot_ovlp.ps. The name of the file and the details of the plot are set in plot_ovlp.
 
