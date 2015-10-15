@@ -46,8 +46,6 @@ gnuplot gnuplot_script
 This generates a file plot_ovlp.ps. The name of the file and the details of the plot are set in plot_ovlp.
 
 
-
-
 # Additional details
 A more detailed explanation of the program is below.
 
