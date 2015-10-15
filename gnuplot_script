@@ -1,0 +1,13 @@
+set output "plot_ovlp.ps"
+set terminal postscript portrait
+set size .75,.75
+set title ""
+set xlabel "cutoff length"
+set ylabel "normalized overlap"
+set xrange [0:7500]
+#set yrange [20:500]
+#set   autoscale
+set logscale y 10
+
+plot "ideal_ovlp.txt" using 1:2 title 'idealized overlap' with lines,\
+     "actual_ovlp.txt" using 1:2 title 'actual overlap' with points lc rgb 'blue'

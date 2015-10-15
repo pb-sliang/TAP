@@ -11,28 +11,52 @@ A few example of use cases are:
 (3) The speedup should be balanced by the lost of coverage due to exclusion of shorter reads
 
 
-Install the program
-pip install git+https://github.com/pb-sliang/TAP.git
+The program assume that the Falcon has been installed in your system. To install the program
 
-The program assume that the Falcon has been installed in your system.
+git clone https://github.com/pb-sliang/TAP.git
+
+Then activate FALCON virtual environment
+( for example, 
+source ~/FALCON-integrate/fc_env/bin/activate
+or
+. ~/FALCON-integrate/fc_env/bin/activate
+)
+
+cd TAP
+sh setup.sh     # this will copy python scripts to FALCON virtual environment
+
+To run the program, first run FALCON on a small number of cells, in a directory different from where you normally run FALCON on the full data set:
+(1) prepare a input.fofn file containing a small number of files.
+(2) prepare a configuration file (for example ecoli.cfg) containing parameters to run falcon, 
+(3) run FALCON by 
+fc_run.py ecoli.cfg 
+where ecoli.cfg is the configuration file containing parameters to be tuned.
+Set length_cutoff to a small value (for example length_cutoff = 500). 
+(4) after FALCON has finished and .las file generated, run TAP programs by sh tap.sh. Note that tap.sh should be run in the same directory where FALCON was run (on a small number of cells) in the directory containing 0-rawreads subdirectory.
+this will generate two text files in the curren reporting the results of the calculation:
+ideal_ovlp.txt and actual_ovlp.txt. File ideal_ovlp.txt is the overlaps computed from the the read length distribution
+assuming the genome contains no repeats. File actual_ovlp.txt is from the daligner overlap normalized to so it can be directly
+compared to ideal_ovlp.txt. These two files can be plotted together using plot_ovlp:
+gnuplot plot_ovlp
 
 
 
 
 ################################################################################################
 A more detailed explanation of the program is below.
-The reason for increaseing the miminum required overlapfor an alugnment is that when this minimum exceeds the length of the repeat, the repeat will no longer be aligned. The computation is reduced because the length of overlap is computed in seeding stage, which is only a small part of overall computation.
+
+The reason for increaseing the miminum required overlapfor an alignment is that when this minimum exceeds the length of the repeat, the repeat will no longer be aligned. The computation is reduced because the length of overlap is computed in seeding stage, which is only a small part of overall computation.
 
 Requiring a minimum overlap is not without drawbacks. It leads to a reduction in effective coverage since short reads can never be aligned and are in effect removed from assembly. Reduction of coverage may be detrimental to the contiguity of final assembly. The amount of reduction will obviously depend on the distribution of read length.
 
 The expected alignment for a non-repetitive genome can be derived assuming that reads are drawn randomly from the genome. The expression can be written in closed form as is an integral over the distribution of read length.
 
 The expected pairwise overlap is
+N_o(L)/(X N_n) = (\int_L^\infty (x - L) f(x) dx / l_a)^2
 
+Here, L is the minimum overlap length; N_o (L) is total pairwise overlap length; X is the per site coverage; N_n is the total number of nucleotides in the reads. Note that N_o(L), X, and N_n should be computed on the same partial data set. When L=0, the right hand side is equal to 1. The left hand side can be interpreted as square of the fold of reduction in effective coverage due to requirement of increased overlap length. l_a=N_n/N_r is the average read length. (N_r is the total number of reads).
 
-Here, L  is the minimum overlap length; N_ovlp (L) is total pairwise overlap length; X is the per site coverage; N_nucl   is the total number of nucleotides in the reads. Note that N_ovlp (L), X, 〖and N〗_nucl  should be computed on the same partial data set. When L=0, the right hand side is equal to 1. The left hand side can be interpreted as square of the fold of reduction in effective coverage due to requirement of increased overlap length. l_ave=N_nucl/N_read    is the average read length.
-
-Note that N_ovlp (L) can be measured from a fraction of data. If the factor XN_nucl  for the same fraction is used, then this can be directly comparable to the right-hand side. 
+Note that N_o (L) can be measured from a fraction of data. If the factor X*N_n for the same fraction is used, then this can be directly comparable to the right-hand side. 
 
 To recap, the ideal overlap is what the pairwise overlap should be as a function of minimum overlap length if the genome has no repeats. It is computed from the distribution of read length for the data. The actual overlap is computed on a partial data set (to ease the computation). Since the reads are distributed randomly among files, the partial data should be a good approximation to the entire data set. It is scaled to be directly comparable to the ideal overlap.
 Some of ways of using these curves
