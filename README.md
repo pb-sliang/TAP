@@ -11,7 +11,8 @@ A few example of use cases are:
 (3) The speedup should be balanced by the lost of coverage due to exclusion of shorter reads
 
 
-The program assume that the Falcon has been installed in your system. To install the program
+# Installation
+The program assume that the Falcon has been installed in your system. To install TAP,
 
 git clone https://github.com/pb-sliang/TAP.git
 
@@ -23,21 +24,25 @@ or
 )
 
 cd TAP
-sh setup.sh     # this will copy python scripts to FALCON virtual environment
+sh setup.sh     # this will copy python scripts to FALCON virtual environment $VIRTUAL_ENV/bin
 
-To run the program, first run FALCON on a small number of cells, in a directory different from where you normally run FALCON on the full data set:
-(1) prepare a input.fofn file containing a small number of files.
-(2) prepare a configuration file (for example ecoli.cfg) containing parameters to run falcon, 
+# Running TAP
+To run TAP, first run FALCON on a small number of ZMW cells, however, in a directory different from where you normally run FALCON on the full data set:
+(1) prepare a input.fofn file containing a small number of cells in order to speed up computation.
+(2) prepare a configuration file (for example ecoli.cfg) containing FALCON parameters. 
 (3) run FALCON by 
 fc_run.py ecoli.cfg 
-where ecoli.cfg is the configuration file containing parameters to be tuned.
+where ecoli.cfg is the configuration file containing some of the parameters to be tuned.
 Set length_cutoff to a small value (for example length_cutoff = 500). 
-(4) after FALCON has finished and .las file generated, run TAP programs by sh tap.sh. Note that tap.sh should be run in the same directory where FALCON was run (on a small number of cells) in the directory containing 0-rawreads subdirectory.
-this will generate two text files in the curren reporting the results of the calculation:
-ideal_ovlp.txt and actual_ovlp.txt. File ideal_ovlp.txt is the overlaps computed from the the read length distribution
+(4) after FALCON has finished and .las file generated, run TAP programs by 
+tap.sh. Note that tap.sh should be run in the same directory where FALCON was run (on a small number of cells) in the directory containing 0-rawreads subdirectory. tap.sh generates two text files in the current directory reporting the results of the calculation:
+ideal_ovlp.txt and actual_ovlp.txt. File ideal_ovlp.txt is the expected overlaps computed from the the read length distribution
 assuming the genome contains no repeats. File actual_ovlp.txt is from the daligner overlap normalized to so it can be directly
-compared to ideal_ovlp.txt. These two files can be plotted together using plot_ovlp:
+compared to ideal_ovlp.txt. In both files, the first column is the minimum overlap length, below which the overlap will not be counted. The secon column is the normalized overlap. (this will be the right hand size of the equaltion above for ideal_ovlp.txt and the left side of the euqation for actual_ovlp.txt). These two files can be plotted together using plot_ovlp script to gnuplot:
+
 gnuplot plot_ovlp
+
+This generates a file plot_ovlp.ps. The name of the file and the details of the plot are set in plot_ovlp.
 
 
 
