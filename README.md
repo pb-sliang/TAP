@@ -48,7 +48,7 @@ This generates a file plot_ovlp.ps. The name of the file and the details of the 
 
 
 
-################################################################################################
+# Additional details
 A more detailed explanation of the program is below.
 
 The reason for increaseing the miminum required overlapfor an alignment is that when this minimum exceeds the length of the repeat, the repeat will no longer be aligned. The computation is reduced because the length of overlap is computed in seeding stage, which is only a small part of overall computation.
